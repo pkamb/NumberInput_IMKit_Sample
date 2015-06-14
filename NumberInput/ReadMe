@@ -1,19 +1,20 @@
-NumberInput 2
+NumberInput 3
 
-This version of the NumberInput project conversion modes.
+This version of the NumberInput project adds a candidate window.
 
-The NumberInput input method supports all the NSNumberFormatterStyles supported by the NSNumberFormatter class ( see file:///Developer/Documentation/DocSets/com.apple.ADC_Reference_Library.CoreReference.docset/Contents/Resources/Documents/documentation/Cocoa/Reference/Foundation/Classes/NSNumberFormatter_Class/index.html)
+The candidate window lets the user override the selected mode conversion.
 
-The NSNumberFormatterStyle is set by choosing an input mode from the Text Input Menu.
+To add a candidate window to the input method the following needs to be done:
 
-To add mode support to the input method the following needs to be done:
+1. Create an IMKCandidates* object.  This is done on line 33 of main.m  
+2. In your controller object (NumberInputController.m) add logic to display a candidate window.  In this example we display the candidate window after the user has converted the input once (i.e. has typed a number followed by a space), and then types another space.
+   The addition is found in NumberInputController.m lines 190-198.
+3. Next you need to implement a method to supply the candidates.  This method is defined as part of the IMKServerInput informal protocol in IMKInputController.h.  It is defined like this: - (NSArray*)candidates:(id)sender;.
+   This method needs to create an array of NSStrings or NSAttributedStrings as its return value. Each element of the array will be a selectable candidate in the candidate window.
+4. You also need to create a method that is called when the selection in the candidate window changes, and another method that is called when the user makes her final choice.
+   The method that is called when the user changes her selection is: - (void)candidateSelectionChanged:(NSAttributedString*)candidateString.
+   The method called when the final selection is made is: - (void)candidateSelected:(NSAttributedString*)candidateString
 
-1. Add a ComponentInputModeDict dictionary to your Info.plist file.  The ComponentInputModeDict dictionary describes how to display your modes in the Text Input Menu and in the International Preferences preference panel.
-2. Implement the -(void)setValue:(id)value forTag:(unsigned long)tag client:(id)sender method.  This method takes a mode string and uses it to set the current mode.  In the NumberInput case we map the string modes to the NSNumberFormatterStyle constants and then tell the conversion engine about the new mode.
+As usual after making these changes build the input method and then copy it to /Library/Input Methods/.  
 
-
-After making these changes build the input method and then copy it to /Library/Input Methods/. Because you are adding modes you may need to log out and log back in.
-
-After logging out and logging back in open the International Preferences/Input Menu panel and check. There should be a whole list of modes there.  You can select or deslect these modes there.
-
-Now if you select a mode the number conversion will change to the type of formatting you set.
+Now open TextEdit.app.  Choose one of the NumberInput modes and type a number, space and the space again. The candidate window should pop-up.

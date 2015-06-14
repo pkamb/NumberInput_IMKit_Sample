@@ -82,14 +82,14 @@ Here are the three approaches:
 		// In other words the system will not deliver a key down event to the application.
 		// Returning NO means the original key down will be passed on to the client.
 		BOOL					inputHandled = NO;
-		// The parser is an NSScanner.
+		// The parser is an NSScanner
 		NSScanner*				scanner = [NSScanner scannerWithString:string];
 		NSDecimal				decimalValue;
 		// Check the input.  If it is possibly part of a decimal number remember that.
 		BOOL					isDecimal = [scanner scanDecimal:&decimalValue];
 
 		if ( isDecimal ) {
-			// If the input text is part of a decimal number, add it to the original buffer, and return that we handled it.
+			// If the input text is part of a decimal number.  Add it to the original buffer, and return that we handled it.
 			[self originalBufferAppend:string client:sender];
 			inputHandled = YES;
 		}
@@ -175,7 +175,8 @@ Here are the three approaches:
 		// client application. For that reason we need to test in the case where
 		// we might not handle the command.
 		
-		// The test here is simple.  Test to see if any text has been aded to the original buffer.
+		//
+		//The test here is simple.  Test to see if any text has been aded to the original buffer.
 		NSString*		bufferedText = [self originalBuffer];
 		
 		if ( bufferedText && [bufferedText length] > 0 ) {
@@ -213,6 +214,8 @@ Here are the three approaches:
 	}
 }
 
+
+
 // This method converts buffered text based on the trigger string.  If we did convert the text previously insert the converted text with
 // the trigger string appended to the converted text.  
 // If we have not done a previous conversion check to see if the input string is a space.  If it is convert the text mark it in the client, and remember that we did do a conversion.
@@ -224,16 +227,28 @@ Here are the three approaches:
 	BOOL					handled = NO;
 	
 	if ( _didConvert && convertedString && [convertedString length] > 0  ) {
-		
-		
-			NSString*		completeString = [convertedString stringByAppendingString:trigger];
-			[sender insertText:completeString replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
+
+			extern IMKCandidates*		candidates;
+			if ( candidates ) {
 			
-			[self setComposedBuffer:@""];
-			[self setOriginalBuffer:@""];
-			_insertionIndex = 0;
-			_didConvert = NO;
-			handled = YES;
+				_currentClient = sender;
+				[candidates updateCandidates];
+				[candidates show:kIMKLocateCandidatesBelowHint];
+				
+				
+			}
+			else {
+			
+				NSString*		completeString = [convertedString stringByAppendingString:trigger];
+				
+				[sender insertText:completeString replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
+				
+				[self setComposedBuffer:@""];
+				[self setOriginalBuffer:@""];
+				_insertionIndex = 0;
+				_didConvert = NO;
+				handled = YES;
+			}
 
 	}
 	else if ( originalText && [originalText length] > 0 ) {
@@ -253,7 +268,6 @@ Here are the three approaches:
 	}
 	return handled;
 }
-
 //This method is called by the InputMethodKit when the user as selected a new input mode from the text input menu.
 -(void)setValue:(id)value forTag:(unsigned long)tag client:(id)sender
 {
@@ -281,6 +295,43 @@ Here are the three approaches:
 		[[[NSApp delegate] conversionEngine] setConversionMode:newMode];
 	}
 }
+
+- (NSArray*)candidates:(id)sender
+{
+    NSMutableArray*			theCandidates = [NSMutableArray array];
+	ConversionEngine*		engine = [[NSApp delegate] conversionEngine];
+	NSNumberFormatterStyle	currentStyle = [ engine conversionMode];
+	NSInteger				index;
+	NSString*				originalString = [self originalBuffer];
+    
+
+	// Build the array of candidates by converting the original text for each mode
+	for ( index = NSNumberFormatterDecimalStyle; index < NSNumberFormatterSpellOutStyle+1; index++ ) {
+		[engine setConversionMode:index];
+		[theCandidates addObject:[engine convert:originalString]];
+	}
+	[engine setConversionMode:currentStyle];
+	return theCandidates;
+	
+}
+
+- (void)candidateSelectionChanged:(NSAttributedString*)candidateString
+{
+	[_currentClient setMarkedText:[candidateString string] selectionRange:NSMakeRange(_insertionIndex, 0) replacementRange:NSMakeRange(NSNotFound,NSNotFound)];
+	_insertionIndex = [candidateString length];
+}
+
+/*!
+    @method     
+    @abstract   Called when a new candidate has been finally selected.
+    @discussion The candidate parameter is the users final choice from the candidate window. The candidate window will have been closed before this method is called.
+*/
+- (void)candidateSelected:(NSAttributedString*)candidateString
+{
+	[self setComposedBuffer:[candidateString string]];
+	[self commitComposition:_currentClient];
+}
+
 
 -(void)dealloc 
 {

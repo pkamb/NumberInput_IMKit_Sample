@@ -70,20 +70,18 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 	*/
 	
 	if ( formatter == nil ) {
-		// Specify that I want the modern 10.4 behavior
+		// Specify that we want the modern 10.4 behavior
 		[NSNumberFormatter setDefaultFormatterBehavior:NSNumberFormatterBehavior10_4];
 		// Now allocate our formatter
 		formatter = [[NSNumberFormatter alloc] init];		
 	}
-	
 	// Convert the string into a number first
 	// We set the conversion style each time in case it has changed.
 	[formatter setNumberStyle:NSNumberFormatterNoStyle];
 	
 	NSNumber*		number = [formatter numberFromString:string];
-	NSLog(@"convert:\n\tnumber: %@\n\tstring: %@", number, string);
 	
-	//Now convert the number to the right format string
+	// Now convert the number to the right format string
 	[formatter setNumberStyle:[self conversionMode]];
 	return [formatter stringFromNumber:number];
 }
@@ -95,7 +93,6 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 -(void)setConversionMode:(NSNumberFormatterStyle)mode
 {
 	conversionMode = mode;
-	NSLog(@"set mode to %ld", conversionMode);
 }
 
 @end

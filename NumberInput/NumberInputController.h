@@ -67,10 +67,12 @@ const NSString* kSpelloutMode = @"com.apple.inputmethod.spellout";
 		//This flag indicates that the original text was converted once in response to a trigger (space key)
 		//the next time the trigger is received the composition will be committed.
 		BOOL							_didConvert;
+		//the current active client.
+		id								_currentClient;
 }
 
-// These are simple methods for managing our composition and original buffers.
-// They are all simple wrappers around basic NSString methods.
+//These are simple methods for managing our composition and original buffers
+//They are all simple wrappers around basic NSString methods.
 -(NSMutableString*)composedBuffer;
 -(void)setComposedBuffer:(NSString*)string;
 

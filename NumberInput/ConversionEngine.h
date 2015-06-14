@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2007 Apple Inc. All Rights Reserved.
 
 */
+
 #import <Cocoa/Cocoa.h>
 
 /*!
