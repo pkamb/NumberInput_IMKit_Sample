@@ -55,8 +55,10 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 //Note that the ConversionEngine is instantiated automatically because we said to instantiate the engine object in Interface Builder.
 @interface NumberInputApplicationDelegate : NSObject {
 	IBOutlet ConversionEngine*			_conversionEngine;
+	IBOutlet NSMenu*					_menu;
 }
 
 -(ConversionEngine*)conversionEngine;
+-(NSMenu*)menu;
 
 @end

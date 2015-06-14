@@ -1,20 +1,33 @@
-NumberInput 3
+NumberInput 4
 
-This version of the NumberInput project adds a candidate window.
+This version of the NumberInput project adds a preferences and menu items that let the user change the preferences.
 
-The candidate window lets the user override the selected mode conversion.
+To add a preferences window and preferences support your create a preferences.nib that uses an NSUserDefaultsController to bind your preferences
+to key-value pairs in the user defaults database.  You also need to provide a preferences.plist so that the InputMethodKit can automatically set your preferences defaults.
+Finally, you provide the user access to the preferences by adding a preferences menu item to the Text Input Menu.
 
-To add a candidate window to the input method the following needs to be done:
+1. In Interface Builder create a nib file called preferences.nib.  Add a utility panel here with controls.
+1a. Make the File's owner an NSWindowController and connect it with the panel.
+1b.  Add a matrix of 2 Radio Buttons.  Set the Tag of the first button to 1.  And the tag of the second to 0.
+1c.  Drag a NSUserDefaultsController to your nib file.  Then bind the NSMatrix to selectedTags.  Set the model key path to verticalCandidate.
 
-1. Create an IMKCandidates* object.  This is done on line 33 of main.m  
-2. In your controller object (NumberInputController.m) add logic to display a candidate window.  In this example we display the candidate window after the user has converted the input once (i.e. has typed a number followed by a space), and then types another space.
-   The addition is found in NumberInputController.m lines 190-198.
-3. Next you need to implement a method to supply the candidates.  This method is defined as part of the IMKServerInput informal protocol in IMKInputController.h.  It is defined like this: - (NSArray*)candidates:(id)sender;.
-   This method needs to create an array of NSStrings or NSAttributedStrings as its return value. Each element of the array will be a selectable candidate in the candidate window.
-4. You also need to create a method that is called when the selection in the candidate window changes, and another method that is called when the user makes her final choice.
-   The method that is called when the user changes her selection is: - (void)candidateSelectionChanged:(NSAttributedString*)candidateString.
-   The method called when the final selection is made is: - (void)candidateSelected:(NSAttributedString*)candidateString
+2. Add a preferences.plist to your the NumberInput project.  It should look like this:
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>verticalCandidate</key>
+	<integer>1</integer>
+</dict>
+</plist>
+
+3. Back in InterfaceBuilder create an NSMenu in your MainMenu.nib.  Add a single NSMenuItem to the menu.  Name it "Preferences..."
+
+4. The menu in this example's case is shared amongst all controllers so create an IBOutlet in your NumberInputApplicationDelegate that is an NSMenu.
+   Also be sure and provide an accessor function for the menu.  Then have IB reread the NumberInputApplicationDelegate and connect the new menu outlet to your NSMenu.
+
+4. Add a menu method to your input controller.  This menu function overrides the menu method declared in IMKInputController, and it will be called whenever your input method is selected and the Text Input Menu needs to be updated.
 
 As usual after making these changes build the input method and then copy it to /Library/Input Methods/.  
 
-Now open TextEdit.app.  Choose one of the NumberInput modes and type a number, space and the space again. The candidate window should pop-up.
+Now open TextEdit.app.  Choose one of the NumberInput modes you can see that the Text Input Menu now adds an item called "Preferences..." Selecting that item should display your preferences panel.

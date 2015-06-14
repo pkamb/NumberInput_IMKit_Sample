@@ -78,11 +78,11 @@ Here are the three approaches:
 */
 -(BOOL)inputText:(NSString*)string client:(id)sender
 {
-		// Return YES to indicate the the key input was received and dealt with.  Key processing will not continue in that case.
-		// In other words the system will not deliver a key down event to the application.
+		// Return YES to indicate the the key input was received and dealt with.  Key processing will not continue in that case.  In
+		// other words the system will not deliver a key down event to the application.
 		// Returning NO means the original key down will be passed on to the client.
 		BOOL					inputHandled = NO;
-		// The parser is an NSScanner
+		// The parser is an NSScanner.
 		NSScanner*				scanner = [NSScanner scannerWithString:string];
 		NSDecimal				decimalValue;
 		// Check the input.  If it is possibly part of a decimal number remember that.
@@ -175,8 +175,7 @@ Here are the three approaches:
 		// client application. For that reason we need to test in the case where
 		// we might not handle the command.
 		
-		//
-		//The test here is simple.  Test to see if any text has been aded to the original buffer.
+		// The test here is simple.  Test to see if any text has been aded to the original buffer.
 		NSString*		bufferedText = [self originalBuffer];
 		
 		if ( bufferedText && [bufferedText length] > 0 ) {
@@ -230,10 +229,19 @@ Here are the three approaches:
 
 			extern IMKCandidates*		candidates;
 			if ( candidates ) {
-			
+				// Read the preferences to get the candidate orientation.
+				NSInteger		vertical = [[NSUserDefaults standardUserDefaults] integerForKey: @"verticalCandidate"];
+
+				if ( vertical ) {
+					[candidates setPanelType:kIMKSingleColumnScrollingCandidatePanel];
+				}
+				else {
+					[candidates setPanelType:kIMKSingleRowSteppingCandidatePanel];
+				}
 				_currentClient = sender;
-				[candidates updateCandidates];
-				[candidates show:kIMKLocateCandidatesBelowHint];
+				[candidates updateCandidates];  // This updates the candidates.
+				[candidates show:kIMKLocateCandidatesBelowHint];  // This shows the candidates. If possible, display them below the users current
+																  // insertion point.
 				
 				
 			}
@@ -268,6 +276,7 @@ Here are the three approaches:
 	}
 	return handled;
 }
+
 //This method is called by the InputMethodKit when the user as selected a new input mode from the text input menu.
 -(void)setValue:(id)value forTag:(unsigned long)tag client:(id)sender
 {
@@ -305,7 +314,7 @@ Here are the three approaches:
 	NSString*				originalString = [self originalBuffer];
     
 
-	// Build the array of candidates by converting the original text for each mode
+	// Build the array of candidates by converting the original text for each mode.
 	for ( index = NSNumberFormatterDecimalStyle; index < NSNumberFormatterSpellOutStyle+1; index++ ) {
 		[engine setConversionMode:index];
 		[theCandidates addObject:[engine convert:originalString]];
@@ -330,6 +339,11 @@ Here are the three approaches:
 {
 	[self setComposedBuffer:[candidateString string]];
 	[self commitComposition:_currentClient];
+}
+
+-(NSMenu*)menu
+{
+	return [[NSApp delegate] menu];
 }
 
 

@@ -20,6 +20,7 @@
             LANGUAGE = ObjC;
             OUTLETS =             {
                 "_conversionEngine" = ConversionEngine;
+                "_menu" = NSMenu;
             };
             SUPERCLASS = NSObject;
         }
