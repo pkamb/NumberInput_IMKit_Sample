@@ -14,7 +14,9 @@
 		E93074B70A5C264700470842 /* InputMethodKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E93074B60A5C264700470842 /* InputMethodKit.framework */; };
 		E93074E20A5C2F1200470842 /* NumberInputController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93074E10A5C2F1200470842 /* NumberInputController.m */; };
 		E93396E90A9A0AD60073E6C4 /* nine.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E93396E50A9A0AD50073E6C4 /* nine.tiff */; };
+		E93396F50A9A105E0073E6C4 /* ConversionEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = E93396F40A9A105E0073E6C4 /* ConversionEngine.m */; };
 		E999E1590BE8D77E00CAE01B /* ReadMe in Resources */ = {isa = PBXBuildFile; fileRef = E999E1580BE8D77E00CAE01B /* ReadMe */; };
+		E9FB8BCB0BF0D79B00305C76 /* NumberInputApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E9FB8BCA0BF0D79B00305C76 /* NumberInputApplicationDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +33,12 @@
 		E93074E00A5C2F1200470842 /* NumberInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberInputController.h; sourceTree = "<group>"; };
 		E93074E10A5C2F1200470842 /* NumberInputController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberInputController.m; sourceTree = "<group>"; };
 		E93396E50A9A0AD50073E6C4 /* nine.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = nine.tiff; sourceTree = "<group>"; };
+		E93396F30A9A105E0073E6C4 /* ConversionEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionEngine.h; sourceTree = "<group>"; };
+		E93396F40A9A105E0073E6C4 /* ConversionEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversionEngine.m; sourceTree = "<group>"; };
 		E999E1580BE8D77E00CAE01B /* ReadMe */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe; sourceTree = "<group>"; };
+		E9FB8BC90BF0D79B00305C76 /* NumberInputApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberInputApplicationDelegate.h; sourceTree = "<group>"; };
+		E9FB8BCA0BF0D79B00305C76 /* NumberInputApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumberInputApplicationDelegate.m; sourceTree = "<group>"; };
+		E9FB8C530BF4A77900305C76 /* InputMethodKeysDictionary.dict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = InputMethodKeysDictionary.dict; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +59,10 @@
 			children = (
 				E93074E00A5C2F1200470842 /* NumberInputController.h */,
 				E93074E10A5C2F1200470842 /* NumberInputController.m */,
+				E93396F30A9A105E0073E6C4 /* ConversionEngine.h */,
+				E93396F40A9A105E0073E6C4 /* ConversionEngine.m */,
+				E9FB8BC90BF0D79B00305C76 /* NumberInputApplicationDelegate.h */,
+				E9FB8BCA0BF0D79B00305C76 /* NumberInputApplicationDelegate.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -111,6 +122,7 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				E9FB8C530BF4A77900305C76 /* InputMethodKeysDictionary.dict */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -192,6 +204,8 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				E93074E20A5C2F1200470842 /* NumberInputController.m in Sources */,
+				E93396F50A9A105E0073E6C4 /* ConversionEngine.m in Sources */,
+				E9FB8BCB0BF0D79B00305C76 /* NumberInputApplicationDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

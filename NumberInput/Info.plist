@@ -25,9 +25,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<!--                                                -->
-	<!--                                                -->
 	<!--  Begin the require entries for InputMethodKit based input methods -->
-	<!--                                                -->
 	<!--                                                -->
     <!-- Input Methods are background only applications -->
     <key>LSBackgroundOnly</key>
@@ -59,10 +57,5 @@
 	<array>
 	<string>Latn</string>
 	</array>
-	<!--                                                -->
-	<!--                                                -->
-	<!--          End of required entries 				-->
-	<!--                                                -->
-	<!--                                                -->
 </dict>
 </plist>

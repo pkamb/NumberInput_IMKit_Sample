@@ -3,14 +3,24 @@
                 {
             CLASS = ConversionEngine;
             LANGUAGE = ObjC;
-            OUTLETS =             {
-                formatter = NSNumberFormatter;
-            };
             SUPERCLASS = NSObject;
         }, 
                 {
             CLASS = FirstResponder;
             LANGUAGE = ObjC;
+            SUPERCLASS = NSObject;
+        }, 
+                {
+            CLASS = InputEngine;
+            LANGUAGE = ObjC;
+            SUPERCLASS = NSObject;
+        }, 
+                {
+            CLASS = NumberInputApplicationDelegate;
+            LANGUAGE = ObjC;
+            OUTLETS =             {
+                "_conversionEngine" = ConversionEngine;
+            };
             SUPERCLASS = NSObject;
         }
     );

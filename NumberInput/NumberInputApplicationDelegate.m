@@ -1,8 +1,8 @@
 /*
 
-File:NumberInput_Prefix.pch
+File:NumberInputApplicationDelegate.m
 
-Abstract: Standard precompiled prefix header.
+Abstract: The input method's application delegate object.
 
 Version: 1.0
 
@@ -47,6 +47,15 @@ POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2007 Apple Inc. All Rights Reserved.
 
 */
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif
+#import "NumberInputApplicationDelegate.h"
+
+
+@implementation NumberInputApplicationDelegate
+
+-(ConversionEngine*)conversionEngine
+{
+	return _conversionEngine;
+}
+
+
+@end
