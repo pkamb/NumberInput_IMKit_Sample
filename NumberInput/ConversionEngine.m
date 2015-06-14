@@ -47,23 +47,26 @@ POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2007 Apple Inc. All Rights Reserved.
 
 */
-
 #import "ConversionEngine.h"
 
 
 @implementation ConversionEngine
 
+-(void)awakeFromNib
+{
+	[self setConversionMode:NSNumberFormatterDecimalStyle];
+	
+}
 
 -(NSString*)convert:(NSString*)string
 {
 	// Allocate the formatter lazily
-	// 
 	// We want to use the 10.4 methods of NSNumberFormatter so we allocate it here and set the default behavior to the 10.4 behavior.
 	// See comment below from documentation.
 	
 	/*
 	Important:  The pre-Mac OS X v10.4 methods of NSNumberFormatter are not compatible with the methods added for Mac OS X v10.4. An NSNumberFormatter object should not invoke methods in these different behavior groups indiscriminately. Use the old-style methods if you have configured the number-formatter behavior to be NSNumberFormatterBehavior10_0. Use the new methods instead of the older-style ones if you have configured the number-formatter behavior to be NSNumberFormatterBehavior10_4.
-	Note also that number formatters created in Interface Builder use the Mac OS X v10.0 behaviorÑsee NSNumberFormatter on Mac OS X v10.4.
+	Note also that number formatters created in Interface Builder use the Mac OS X v10.0 behaviorâ€”see NSNumberFormatter on Mac OS X v10.4.
 	*/
 	
 	if ( formatter == nil ) {
@@ -72,18 +75,27 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 		// Now allocate our formatter
 		formatter = [[NSNumberFormatter alloc] init];		
 	}
+	
 	// Convert the string into a number first
 	// We set the conversion style each time in case it has changed.
-	[formatter setNumberStyle:[self conversionMode]];
+	[formatter setNumberStyle:NSNumberFormatterNoStyle];
 	
 	NSNumber*		number = [formatter numberFromString:string];
+	NSLog(@"convert:\n\tnumber: %@\n\tstring: %@", number, string);
 	
-	// Now convert the number to the right format string
+	//Now convert the number to the right format string
+	[formatter setNumberStyle:[self conversionMode]];
 	return [formatter stringFromNumber:number];
 }
 
 -(NSNumberFormatterStyle)conversionMode {
-	return NSNumberFormatterDecimalStyle;
+	return conversionMode;
+}
+
+-(void)setConversionMode:(NSNumberFormatterStyle)mode
+{
+	conversionMode = mode;
+	NSLog(@"set mode to %ld", conversionMode);
 }
 
 @end

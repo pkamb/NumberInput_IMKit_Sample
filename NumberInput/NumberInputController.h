@@ -50,6 +50,12 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 #import <Cocoa/Cocoa.h>
 #import <InputMethodKit/InputMethodKit.h>
 
+const NSString* kDecimalMode = @"com.apple.inputmethod.decimal";
+const NSString* kCurrencyMode = @"com.apple.inputmethod.currency";
+const NSString* kPercentMode = @"com.apple.inputmethod.percent";
+const NSString* kScientificMode = @"com.apple.inputmethod.scientific";
+const NSString* kSpelloutMode = @"com.apple.inputmethod.spellout";
+
 @interface NumberInputController : IMKInputController {
 		
 		//_composedBuffer contains text that the input method has converted
@@ -63,8 +69,8 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 		BOOL							_didConvert;
 }
 
-//These are simple methods for managing our composition and original buffers
-//They are all simple wrappers around basic NSString methods.
+// These are simple methods for managing our composition and original buffers.
+// They are all simple wrappers around basic NSString methods.
 -(NSMutableString*)composedBuffer;
 -(void)setComposedBuffer:(NSString*)string;
 

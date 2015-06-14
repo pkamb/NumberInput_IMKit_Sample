@@ -47,6 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2007 Apple Inc. All Rights Reserved.
 
 */
+
 #import "NumberInputApplicationDelegate.h"
 
 
@@ -56,6 +57,7 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 {
 	return _conversionEngine;
 }
+
 
 
 @end

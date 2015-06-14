@@ -102,7 +102,7 @@ Here are the three approaches:
 
 /*!
     @method     
-    @abstract   Called when a user action was taken that ends an input session.  Typically triggered by the user selecting a new input method or keyboard layout.
+    @abstract   Called when a user action was taken that ends an input session.   Typically triggered by the user selecting a new input method or keyboard layout.
     @discussion When this method is called your controller should send the current input buffer to the client via a call to insertText:replacementRange:.  Additionally, this is the time to clean up if that is necessary.
 */
 
@@ -119,6 +119,7 @@ Here are the three approaches:
 	[self setComposedBuffer:@""];
 	[self setOriginalBuffer:@""];
 	_insertionIndex = 0;
+	_didConvert = NO;
 }
 
 // Return the composed buffer.  If it is NIL create it.  
@@ -156,7 +157,7 @@ Here are the three approaches:
 	[sender setMarkedText:buffer selectionRange:NSMakeRange(0, [buffer length]) replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
 }
 
-// Change the original buffer
+// Change the original buffer.
 -(void)setOriginalBuffer:(NSString*)string
 {
 	NSMutableString*		buffer = [self originalBuffer];
@@ -219,13 +220,11 @@ Here are the three approaches:
 - (BOOL)convert:(NSString*)trigger client:(id)sender
 {
 	NSString*				originalText = [self originalBuffer];
-	NSString*				convertedString;
+	NSString*				convertedString = [self composedBuffer];
 	BOOL					handled = NO;
 	
-	if ( _didConvert ) {
-		convertedString = [self composedBuffer];
+	if ( _didConvert && convertedString && [convertedString length] > 0  ) {
 		
-		if ( convertedString && [convertedString length] > 0 ) {
 		
 			NSString*		completeString = [convertedString stringByAppendingString:trigger];
 			[sender insertText:completeString replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
@@ -235,10 +234,9 @@ Here are the three approaches:
 			_insertionIndex = 0;
 			_didConvert = NO;
 			handled = YES;
-		}
+
 	}
-	else {
-		if ( originalText && [originalText length] > 0 ) {
+	else if ( originalText && [originalText length] > 0 ) {
 		
 			convertedString = [[[NSApp delegate] conversionEngine] convert:originalText];
 			[self setComposedBuffer:convertedString];
@@ -252,21 +250,37 @@ Here are the three approaches:
 				[sender insertText:trigger replacementRange:NSMakeRange(NSNotFound, NSNotFound)];
 			}
 			handled = YES;
-		}
 	}
 	return handled;
 }
 
-
--(NSMenu *)menu
+//This method is called by the InputMethodKit when the user as selected a new input mode from the text input menu.
+-(void)setValue:(id)value forTag:(unsigned long)tag client:(id)sender
 {
-	// The application controller object was made a global in its awakeFromNib 
-	// method so that this method can access the menu which is an IBOutlet in
-	// the application controller.
-	NSLog(@"in menu. menu = %@", [[NSApp delegate] menu] );
-	return [[NSApp delegate] menu];
+	NSString*		newModeString = [(NSString*)value retain];
+	NSNumberFormatterStyle	currentMode = [[[NSApp delegate] conversionEngine] conversionMode];
+	NSNumberFormatterStyle newMode;
+	
+	if ( [newModeString isEqual:kDecimalMode] ) {
+		newMode = NSNumberFormatterDecimalStyle;
+	}
+	else if ( [newModeString isEqual:kCurrencyMode] ) {
+		newMode = NSNumberFormatterCurrencyStyle;
+	}
+	else if ( [newModeString isEqual:kPercentMode] ) {
+		newMode = NSNumberFormatterPercentStyle;
+	}
+	else if ( [newModeString isEqual:kScientificMode] ) {
+		newMode = NSNumberFormatterScientificStyle;
+	}
+	else if ( [newModeString isEqual:kSpelloutMode] ) {
+		newMode = NSNumberFormatterSpellOutStyle;
+	}
+	
+	if ( currentMode != newMode ) {
+		[[[NSApp delegate] conversionEngine] setConversionMode:newMode];
+	}
 }
-
 
 -(void)dealloc 
 {

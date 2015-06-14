@@ -47,7 +47,6 @@ POSSIBILITY OF SUCH DAMAGE.
 Copyright (C) 2007 Apple Inc. All Rights Reserved.
 
 */
-
 #import <Cocoa/Cocoa.h>
 
 /*!
@@ -77,5 +76,7 @@ Copyright (C) 2007 Apple Inc. All Rights Reserved.
 	@discussion		convert takes the input text buffer as input a returns a string that has been formatted to a given number format.
 */
 -(NSNumberFormatterStyle)conversionMode;
+
+-(void)setConversionMode:(NSNumberFormatterStyle)mode;
 
 @end
