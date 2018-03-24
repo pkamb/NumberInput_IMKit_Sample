@@ -13,6 +13,15 @@ https://developer.apple.com/library/mac/samplecode/NumberInput_IMKit_Sample/Intr
  > This sample includes five stages. You begin with a simple do nothing version and move to a full version.
  
  Copyright (C) 2007 Apple Inc. All Rights Reserved.
+ 
+# Radars and Bug Reports
+
+If you encounter any bugs around Input Method Kit for macOS, please file a Radar with Apple!
+
+Then, post the links here:
+
+https://github.com/pkamb/NumberInput_IMKit_Sample/issues/2
+
 
 # Post a link to your Input Method Kit project
 
